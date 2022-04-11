@@ -1,0 +1,143 @@
+      <-------------- 16. 3Sum Closest ------------->
+      
+Given an integer array nums of length n and an integer target, find three integers in nums such that the sum is closest to target.
+Return the sum of the three integers.
+You may assume that each input would have exactly one solution.
+
+Example 1:
+Input: nums = [-1,2,1,-4], target = 1
+Output: 2
+Explanation: The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+
+Example 2:
+Input: nums = [0,0,0], target = 1
+Output: 0
+
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int length = nums.length;
+        int j,k;
+        int minDiff= Integer.MAX_VALUE;
+        int resultSum=0;
+        int sum=0;
+        for(int i=0;i<length;i++)
+        {
+            j=i+1;
+            k= length-1;
+            while(j<k)
+            {
+               sum= nums[i] + nums[j] + nums[k];
+                if(sum== target)
+                {
+                    return target;
+                }
+                else if(sum > target)
+                {
+                    k--;
+                }
+                else
+                {
+                    j++;
+                }
+                if(minDiff > Math.abs(target - sum))
+                {
+                    minDiff = Math.abs(target - sum);
+                    resultSum = sum;
+                }
+            }
+        }
+        return resultSum;
+    }
+    
+    
+           <-------------  1010. Pairs of Songs With Total Durations Divisible by 60 -------------->
+           
+You are given a list of songs where the ith song has a duration of time[i] seconds.
+Return the number of pairs of songs for which their total duration in seconds is divisible by 60. Formally, 
+we want the number of indices i, j such that i < j with (time[i] + time[j]) % 60 == 0.
+
+Example 1:
+Input: time = [30,20,150,100,40]
+Output: 3
+Explanation: Three pairs have a total duration divisible by 60:
+(time[0] = 30, time[2] = 150): total duration 180
+(time[1] = 20, time[3] = 100): total duration 120
+(time[1] = 20, time[4] = 40): total duration 60
+
+Example 2:
+Input: time = [60,60,60]
+Output: 3
+Explanation: All three pairs have a total duration of 120, which is divisible by 60.
+
+       public int numPairsDivisibleBy60(int[] time) {
+        
+        int[] map = new int[60];
+        int result = 0;
+        
+        for(int curr: time){
+            curr = curr % 60;
+            result += map[(60 - curr) % 60];
+            map[curr]++;
+        }
+        return result;
+    }
+    
+    
+            <------------ 18. 4Sum  -------------------->
+            
+Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+
+0 <= a, b, c, d < n
+a, b, c, and d are distinct.
+nums[a] + nums[b] + nums[c] + nums[d] == target
+You may return the answer in any order.
+
+Example 1:
+Input: nums = [1,0,-1,0,-2,2], target = 0
+Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+
+Example 2:
+Input: nums = [2,2,2,2,2], target = 8
+Output: [[2,2,2,2]]
+
+       public List<List<Integer>> fourSum(int[] nums, int target) {
+       Arrays.sort(nums);
+        
+        Set<List<Integer>> result = new HashSet<>();
+        int len = nums.length;
+        int j,k;
+        int sum;
+        for(int i=0;i<len;i++)
+        {
+            for(int x=i+1;x<len;x++)
+            {
+                j= x+1;
+                k = len -1;
+                
+                while(j < k)
+                {
+                    sum = nums[i] + nums[x] + nums[j] + nums[k];
+                    if(sum == target)
+                    {
+                        List<Integer> output = new ArrayList<>();
+                        output.add(nums[i]);
+                        output.add(nums[x]);
+                        output.add(nums[j]);
+                        output.add(nums[k]);
+                        result.add(output);
+                        j++;
+                        k--;
+                    }
+                    else if(sum > target)
+                    {
+                        k--;
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(result);
+    }
