@@ -1,0 +1,72 @@
+
+
+    <------------------ 1423. Maximum Points You Can Obtain from Cards ------------------->
+   
+There are several cards arranged in a row, and each card has an associated number of points. The points are given in the integer array cardPoints.
+In one step, you can take one card from the beginning or from the end of the row. You have to take exactly k cards.
+Your score is the sum of the points of the cards you have taken.
+Given the integer array cardPoints and the integer k, return the maximum score you can obtain.
+
+Example 1:
+Input: cardPoints = [1,2,3,4,5,6,1], k = 3
+Output: 12
+Explanation: After the first step, your score will always be 1. However, choosing the rightmost card first will maximize your total score. The optimal strategy is to take the three cards on the right, giving a final score of 1 + 6 + 5 = 12.
+
+Example 2:
+Input: cardPoints = [2,2,2], k = 2
+Output: 4
+Explanation: Regardless of which two cards you take, your score will always be 4.
+
+Example 3:
+Input: cardPoints = [9,7,7,9,7,7,9], k = 7
+Output: 55
+Explanation: You have to take all the cards. Your score is the sum of points of all cards.
+
+      public int maxScore(int[] cardPoints, int k) {
+    int n = cardPoints.length;
+    int leftSum = 0;
+    for (int i = 0; i < k; i++) {
+        leftSum += cardPoints[i];
+    }
+    int max = leftSum;
+    int rightSum = 0;
+
+    for (int i = 0; i < k; i++) {
+        leftSum  -= cardPoints[k - 1 - i];
+        rightSum += cardPoints[n - 1 - i];
+        max = Math.max(max, leftSum + rightSum);
+    }
+
+    return max;
+    }
+    
+    
+        <--------------- 45. Jump Game II ---------------->
+        
+Given an array of non-negative integers nums, you are initially positioned at the first index of the array.
+Each element in the array represents your maximum jump length at that position.
+Your goal is to reach the last index in the minimum number of jumps.
+You can assume that you can always reach the last index.
+
+Example 1:
+Input: nums = [2,3,1,1,4]
+Output: 2
+Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 step from index 0 to 1, then 3 steps to the last index.
+
+Example 2:
+Input: nums = [2,3,0,1,4]
+Output: 2
+
+      public int jump(int[] nums) {
+        int jumps = 0, farthestDist = 0;
+        int left = 0, right = 0;
+        while (right < nums.length - 1) {
+            for (int i = left; i <= right; ++i)
+                farthestDist = Math.max(farthestDist, i + nums[i]);
+            left = right + 1;
+            right = farthestDist;
+            ++jumps;
+        }
+        return jumps;
+    
+    }
