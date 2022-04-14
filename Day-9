@@ -1,0 +1,57 @@
+
+      <--------------- 55. Jump Game ---------------->
+      
+You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your 
+maximum jump length at that position.
+Return true if you can reach the last index, or false otherwise.
+
+Example 1:
+Input: nums = [2,3,1,1,4]
+Output: true
+Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
+
+Example 2:
+Input: nums = [3,2,1,0,4]
+Output: false
+Explanation: You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.
+
+    public boolean canJump(int[] nums) {
+        int max = 0;
+    for(int i=0;i<nums.length;i++){
+        if(i>max)
+        {return false;}
+        max = Math.max(nums[i]+i,max);
+    }
+    return true;
+    }
+    
+    
+    
+       <----------------- 974. Subarray Sums Divisible by K ------------------>
+       
+Given an integer array nums and an integer k, return the number of non-empty subarrays that have a sum divisible by k.
+A subarray is a contiguous part of an array.
+
+Example 1:
+Input: nums = [4,5,0,-2,-3,1], k = 5
+Output: 7
+Explanation: There are 7 subarrays with a sum divisible by k = 5:
+[4, 5, 0, -2, -3, 1], [5], [5, 0], [5, 0, -2, -3], [0], [0, -2, -3], [-2, -3]
+
+Example 2:
+Input: nums = [5], k = 9
+Output: 0
+
+     public int subarraysDivByK(int[] nums, int K) {
+        //Map<Integer, Integer> map = new HashMap<>();
+        int[] arr = new int[K];
+		arr[0] = 1;
+        int count = 0, sum = 0;
+        for(int a : nums) {
+            sum = (sum + a) % K;
+            if(sum < 0) sum += K;  // Because -1 % 5 = -1, but we need the positive mod 4
+            count += arr[sum];
+            arr[sum]++;
+        }
+        return count;
+    }
