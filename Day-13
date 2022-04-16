@@ -1,0 +1,76 @@
+
+      <---------------- 992. Subarrays with K Different Integers -------------->
+      
+Given an integer array nums and an integer k, return the number of good subarrays of nums.
+A good array is an array where the number of different integers in that array is exactly k.
+For example, [1,2,3,1,2] has 3 different integers: 1, 2, and 3.
+A subarray is a contiguous part of an array.
+
+Example 1:
+Input: nums = [1,2,1,2,3], k = 2
+Output: 7
+Explanation: Subarrays formed with exactly 2 different integers: [1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2]
+
+Example 2:
+Input: nums = [1,2,1,3,4], k = 3
+Output: 3
+Explanation: Subarrays formed with exactly 3 different integers: [1,2,1,3], [2,1,3], [1,3,4].
+
+     public int subarraysWithKDistinct(int[] nums, int k) {
+        return count(nums,k) - count(nums,k-1);
+    }
+    public int count(int[] nums,int k){
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int start = 0,end = 0, res = 0;
+        while(end < nums.length){
+            map.put(nums[end],map.getOrDefault(nums[end],0)+1);
+            while(start <= end && map.size() > k){
+                if(map.containsKey(nums[start])) map.put(nums[start],map.get(nums[start])-1);
+                if(map.get(nums[start]) == 0) map.remove(nums[start]);
+                start++;
+            }
+            res+= (end - start + 1);
+            end++;
+        }
+        return res;
+    }
+    
+    
+    
+       <--------------------- 424. Longest Repeating Character Replacement -------------------->
+       
+You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. 
+You can perform this operation at most k times.
+Return the length of the longest substring containing the same letter you can get after performing the above operations.
+
+Example 1:
+Input: s = "ABAB", k = 2
+Output: 4
+Explanation: Replace the two 'A's with two 'B's or vice versa.
+
+Example 2:
+Input: s = "AABABBA", k = 1
+Output: 4
+Explanation: Replace the one 'A' in the middle with 'B' and form "AABBBBA".
+The substring "BBBB" has the longest repeating letters, which is 4.
+
+
+public int characterReplacement(String s, int k) {
+        int length= s.length();
+        int arr[] = new int[26];
+        int maxCount=0;
+        int start=0;
+        int maxLength=0;
+        for(int i=0;i<length;i++)
+        {
+            maxCount= Math.max(maxCount,++arr[s.charAt(i)-'A']);
+            while(i - start + 1 - maxCount >k )
+            {
+                arr[s.charAt(start) - 'A']--;
+                 start++;
+            }
+           
+            maxLength = Math.max(maxLength, i - start +1);
+        }
+        return maxLength;
+    }
