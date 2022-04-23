@@ -1,0 +1,168 @@
+
+        <---------------- 237. Delete Node in a Linked List --------------->
+        
+Write a function to delete a node in a singly-linked list. You will not be given access to the head of the list,
+instead you will be given access to the node to be deleted directly.
+It is guaranteed that the node to be deleted is not a tail node in the list.
+
+Example 1:
+Input: head = [4,5,1,9], node = 5
+Output: [4,1,9]
+Explanation: You are given the second node with value 5, the linked list should become 4 -> 1 -> 9 after calling your function.
+
+Example 2:
+Input: head = [4,5,1,9], node = 1
+Output: [4,5,9]
+Explanation: You are given the third node with value 1, the linked list should become 4 -> 5 -> 9 after calling your function.
+
+   public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+    
+             <----------------  160. Intersection of Two Linked Lists  ----------------->
+             
+Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. 
+If the two linked lists have no intersection at all, return null.
+For example, the following two linked lists begin to intersect at node c1:
+The test cases are generated such that there are no cycles anywhere in the entire linked structure.
+Note that the linked lists must retain their original structure after the function returns.
+Custom Judge:
+The inputs to the judge are given as follows (your program is not given these inputs):
+intersectVal - The value of the node where the intersection occurs. This is 0 if there is no intersected node.
+listA - The first linked list.
+listB - The second linked list.
+skipA - The number of nodes to skip ahead in listA (starting from the head) to get to the intersected node.
+skipB - The number of nodes to skip ahead in listB (starting from the head) to get to the intersected node.
+The judge will then create the linked structure based on these inputs and pass the two heads, headA and headB to your program.
+If you correctly return the intersected node, then your solution will be accepted.
+
+Example 1:
+Input: intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
+Output: Intersected at '8'
+Explanation: The intersected node's value is 8 (note that this must not be 0 if the two lists intersect).
+From the head of A, it reads as [4,1,8,4,5]. From the head of B, it reads as [5,6,1,8,4,5]. There are 2 nodes before the intersected node in A;
+There are 3 nodes before the intersected node in B.
+
+Example 2:
+Input: intersectVal = 2, listA = [1,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1
+Output: Intersected at '2'
+Explanation: The intersected node's value is 2 (note that this must not be 0 if the two lists intersect).
+From the head of A, it reads as [1,9,1,2,4]. From the head of B, it reads as [3,2,4]. There are 3 nodes before the intersected node in A;
+There are 1 node before the intersected node in B.
+
+Example 3:
+Input: intersectVal = 0, listA = [2,6,4], listB = [1,5], skipA = 3, skipB = 2
+Output: No intersection
+Explanation: From the head of A, it reads as [2,6,4]. From the head of B, it reads as [1,5]. Since the two lists do not intersect, intersectVal must be 0, while skipA and skipB can be arbitrary values.
+Explanation: The two lists do not intersect, so return null.
+
+     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+         ListNode fst=headA;
+         ListNode scnd=headB;
+        while(fst!=scnd){
+            if(fst==null) fst=headB;
+            else  fst=fst.next;
+            if(scnd==null) scnd=headA;
+            else scnd=scnd.next;
+        }
+        return fst;
+    }
+    
+              <---------------  234. Palindrome Linked List ----------------->
+              
+Given the head of a singly linked list, return true if it is a palindrome.
+
+Example 1:
+Input: head = [1,2,2,1]
+Output: true
+
+Example 2:
+Input: head = [1,2]
+Output: false
+
+
+            public boolean isPalindrome(ListNode head) {
+        ListNode fast = head, slow = head;
+    while (fast != null && fast.next != null) {
+        fast = fast.next.next;
+        slow = slow.next;
+    }
+    if (fast != null) { // odd nodes: let right half smaller
+        slow = slow.next;
+    }
+    slow = reverse(slow);
+    fast = head;
+    
+    while (slow != null) {
+        if (fast.val != slow.val) {
+            return false;
+        }
+        fast = fast.next;
+        slow = slow.next;
+    }
+    return true;
+}
+
+public ListNode reverse(ListNode head) {
+    ListNode prev = null;
+    while (head != null) {
+        ListNode next = head.next;
+        head.next = prev;
+        prev = head;
+        head = next;
+    }
+    return prev; 
+    }
+    }
+    
+          <-------------------- 445. Add Two Numbers II  -------------------->
+          
+You are given two non-empty linked lists representing two non-negative integers. 
+The most significant digit comes first and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+Example 1:
+Input: l1 = [7,2,4,3], l2 = [5,6,4]
+Output: [7,8,0,7]
+
+Example 2:
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [8,0,7]
+
+Example 3:
+Input: l1 = [0], l2 = [0]
+Output: [0]
+
+
+      public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+          Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        
+        ListNode first = l1, second = l2;
+        while (first != null){
+            s1.push(first.val);
+            first = first.next;
+        }
+        
+        while (second != null){
+            s2.push(second.val);
+            second = second.next;
+        }
+        
+        ListNode curr = null;
+        int carry = 0;
+        while(!s1.isEmpty() || !s2.isEmpty() ||  carry != 0) {
+            int one = s1.isEmpty() ? 0 : s1.pop();
+            int two = s2.isEmpty() ? 0 : s2.pop();
+            
+            int sum = one + two + carry;
+            ListNode newNode = new ListNode(sum % 10);
+            newNode.next = curr;
+            curr = newNode;
+            carry = sum/10;
+        }
+        
+        return curr;
+    }
+    
